@@ -76,7 +76,9 @@ The current build is ubuntu 20.04 with Kubernetes 1.21
     --> qemu: VM files in directory: build
     ```
 
-6.  Image are ready to use, please note that the size might be too small. You could resize the image with following command `qemu-img resize <IMAGE_FILE> +DESIRED_SIZE`. Let say we want `kubernetes-1584350145.qcow2` which currently has 6GB size, resized to 100GB, then the command will be:
+6.  Change the `ubuntu` user password. After all it is mentioned in this repo a number of times
+
+7.  Image are ready to use, please note that the size might be too small. You could resize the image with following command `qemu-img resize <IMAGE_FILE> +DESIRED_SIZE`. Let say we want `kubernetes-1584350145.qcow2` which currently has 6GB size, resized to 100GB, then the command will be:
 
     ```
     qemu-img resize kubernetes-1584350145.qcow2 +92G
