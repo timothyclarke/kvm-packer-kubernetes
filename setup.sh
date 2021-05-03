@@ -27,6 +27,7 @@ sysctl --system
 swapoff -a
 modprobe overlay
 modprobe br_netfilter
+echo -e "overlay\nbr_netfilter" > /etc/modules-load.d/crio.conf
 
 systemctl daemon-reload
 systemctl restart containerd
@@ -38,6 +39,11 @@ apt-mark hold kubelet kubeadm kubectl
 
 apt autoclean
 rm -Rf /var/cache/apt/*
+
+mkdir -p ~ubuntu/.ssh
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDaN3jLdekb/QSyHCuIdddnzqnKp5fzynFM4MMusaMmQaZvCq+y9vW1OUZZi48pKXyiSuCnFlzkp8EKuK2al6HH5TJ/ZKwVDsQA+WDhNiE9TZv9DIl4wEBNCxSNjAR6g/5C3gQc2XYPTzEn72RUCzMqg+gcSf3Bu8L5XgCPJ8EksrB9ONuvVCmCATqk66iqgX3Ny6n0jDzQx/YkShhRdgBn5a9RPTLPhtasfT9VepvpZTEj/Pjmf4UFY7+fkWTLW2UwiLvGPMmboS1unlq33fepS4/sviM8XdDqTGp2pNz+MzSTkMPApGVkjhpinUciQ54HIrUy/wS6w3y47O7f5RJl" > ~ubuntu/.ssh/authorized_keys
+chown -R ubuntu.ubuntu ~ubuntu
+chmod -R 700 ~ubuntu/.ssh
 
 systemctl daemon-reload
 systemctl restart kubelet
