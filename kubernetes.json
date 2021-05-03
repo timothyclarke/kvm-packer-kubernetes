@@ -1,0 +1,56 @@
+{
+    "builders":[
+        {
+            "type": "qemu",
+            "iso_url": "{{ user `image_url` }}",
+            "iso_checksum": "{{ user `image_checksum` }}",
+            "iso_checksum_type": "{{ user `image_checksum_type` }}",
+            "format": "qcow2",
+            "disk_image": true,
+            "disk_size": "{{ user `disk_size` }}",
+            "output_directory": "build",
+            "disk_compression": true,
+            "headless": true,
+            "boot_command": [
+                "<enter>"
+            ],
+            "accelerator": "kvm",
+            "ssh_username": "{{ user `ssh_username` }}",
+            "ssh_password": "{{ user `ssh_password` }}",
+            "ssh_port": 22,
+            "ssh_wait_timeout": "300s",
+            "vm_name": "{{ user `vm_name` }}",
+            "qemuargs": [
+                ["-m", "{{ user `memory` }}"],
+                ["-smp", "cpus={{ user `cpus` }}"],
+                ["-cdrom", "{{ user `cloud_init_image` }}"],
+                ["-serial", "mon:stdio"]
+            ]
+      }
+    ],
+    "provisioners": [
+      {
+        "execute_command": "echo '{{ user `ssh_password` }}' | {{.Vars}} sudo -E -S bash -x '{{.Path}}'",
+        "scripts": [
+          "setup.sh"
+        ],
+        "type": "shell"
+      },
+      {
+        "type": "shell",
+        "inline": ["sudo sync"]
+      }
+    ],
+    "variables": {
+      "cpus": "2",
+      "image_checksum": "d0d074b4b0298cbca5c40651e7228b339f28a1081f24c606bb554295a1454500",
+      "image_checksum_type": "sha256",
+      "image_url" : "https://cloud-images.ubuntu.com/minimal/releases/focal/release/ubuntu-20.04-minimal-cloudimg-amd64.img",
+      "cloud_init_image": "cloud-init.img",
+      "disk_size": "6144",
+      "memory": "2048M",
+      "ssh_username": "ubuntu",
+      "ssh_password": "P4s5W0rD",
+      "vm_name": "kubernetes-{{timestamp}}.qcow2"
+    }
+}
